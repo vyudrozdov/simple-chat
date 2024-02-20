@@ -1,7 +1,8 @@
 import React from 'react';
 import Message from './components/Message';
+import MessageInput from './components/MessageInput';
 
-const BAD_ID = -1;
+export const BAD_ID = -1;
 
 export default function App() {
   const [editId, setEditId] = React.useState(BAD_ID);
@@ -31,6 +32,10 @@ export default function App() {
     setTextMessage(messages.find(m => m.id === id).text);
   }
 
+  const onMessageChange = (text) => {
+    setTextMessage(text);
+  }
+
   const stopEditing = () => {
     setEditId(BAD_ID);
   }
@@ -43,10 +48,12 @@ export default function App() {
 
   return (
     <div className='App'>
-      <input value={textMessage} onChange={(e) => {
-        setTextMessage(e.target.value);
-      }} />
-      <button onClick={sendMessage}>{editId !== BAD_ID ? "Edit" : "Send message"}</button>
+      <MessageInput 
+        textMessage={textMessage} 
+        editMode={editId !== BAD_ID} 
+        onChange={onMessageChange}
+        onSubmit={sendMessage}
+      />
       {messages.map(m => (
         <Message {...m} 
           key={m.id}
